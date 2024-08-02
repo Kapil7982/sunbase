@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.green.exception.CustomerException;
 import com.green.model.Customer;
+import com.green.model.CustomerDTO;
 import com.green.repository.CustomerRepository;
 
 @Service
@@ -70,6 +71,24 @@ public class CustomerServiceImpl implements CustomerService{
     public Page<Customer> searchCustomers(String keyword, Pageable pageable) throws CustomerException {
         return customerRepository.findByFirstNameContainingOrLastNameContainingOrEmailContaining(
                 keyword, keyword, keyword, pageable);
+    }
+
+	@Override
+	public Customer addCustomer(CustomerDTO customerDTO) {
+        Customer customer = new Customer();
+        customer.setFirstName(customerDTO.getFirstName());
+        customer.setLastName(customerDTO.getLastName());
+        customer.setStreet(customerDTO.getStreet());
+        customer.setAddress(customerDTO.getAddress());
+        customer.setCity(customerDTO.getCity());
+        customer.setState(customerDTO.getState());
+        customer.setEmail(customerDTO.getEmail());
+        customer.setPhone(customerDTO.getPhone());
+        
+        // Set a default password or leave it null based on your requirements
+        // customer.setPassword(null);
+        
+        return customerRepository.save(customer);
     }
 
 }

@@ -46,15 +46,14 @@ document.addEventListener('DOMContentLoaded', function() {
         event.preventDefault();
 
         const updatedCustomer = {
-            firstName: document.getElementById('firstName').value,
-            lastName: document.getElementById('lastName').value,
+            firstName: document.getElementById('first_name').value,
+            lastName: document.getElementById('last_name').value,
             street: document.getElementById('street').value,
             address: document.getElementById('address').value,
             city: document.getElementById('city').value,
             state: document.getElementById('state').value,
             email: document.getElementById('email').value,
-            phone: document.getElementById('phone').value,
-            password: document.getElementById('password').value
+            phone: document.getElementById('phone').value
         };
 
         fetch(`http://localhost:8888/${custId}`, {

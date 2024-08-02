@@ -6,10 +6,13 @@ import org.springframework.data.domain.Pageable;
 
 import com.green.exception.CustomerException;
 import com.green.model.Customer;
+import com.green.model.CustomerDTO;
 
 public interface CustomerService {
 	
 	public Customer registerCustomer(Customer customer);
+	
+	public Customer addCustomer(CustomerDTO customerDTO);
 	
 	public Customer getCustomerDetailsByEmail(String email)throws CustomerException;
 	

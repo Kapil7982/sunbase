@@ -54,21 +54,28 @@ document.addEventListener('DOMContentLoaded', function() {
         addCustomerForm.addEventListener('submit', function(event) {
             event.preventDefault();
             const customer = {
-                firstName: document.getElementById('firstName').value,
-                lastName: document.getElementById('lastName').value,
+                first_name: document.getElementById('first_name').value,
+                last_name: document.getElementById('last_name').value,
                 street: document.getElementById('street').value,
                 address: document.getElementById('address').value,
                 city: document.getElementById('city').value,
                 state: document.getElementById('state').value,
                 email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                password: document.getElementById('password').value
+                phone: document.getElementById('phone').value
             };
 
-            fetch('http://localhost:8888/customers', {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                console.error('No token found. Redirecting to login.');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            fetch('http://localhost:8888/register', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify(customer)
             })

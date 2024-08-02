@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.green.model.Customer;
+import com.green.model.CustomerDTO;
 import com.green.service.CustomerService;
 import com.green.service.RemoteApiService;
 
@@ -57,6 +58,12 @@ public class CustomerController {
 		return new ResponseEntity<>(registeredCustomer,HttpStatus.ACCEPTED);
 		
 	}
+	
+	@PostMapping("/register")
+    public ResponseEntity<Customer> registerCustomerWithoutPassword(@RequestBody CustomerDTO customerDTO) {
+        Customer registeredCustomer = customerService.addCustomer(customerDTO);
+        return new ResponseEntity<>(registeredCustomer, HttpStatus.CREATED);
+    }
 	
 	@GetMapping("/customers/{email}")
 	public ResponseEntity<Customer> getCustomerByEmailHandler(@PathVariable("email") String email){
