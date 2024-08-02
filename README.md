@@ -123,9 +123,9 @@ This application allows users to manage customers, including adding, editing, de
 
 ![Screenshot 2024-07-27 072359](https://github.com/user-attachments/assets/9f5270c1-2885-47a1-9351-024b4393edc3)
 -
-![Screenshot 2024-07-27 072316](https://github.com/user-attachments/assets/c1188873-833b-4c54-8d15-b0f326a0a590)
+![Screenshot 2024-08-02 071307](https://github.com/user-attachments/assets/d4a5e688-ae0f-45d5-8dd9-823c3c641c8c)
 -
-![Screenshot 2024-07-27 072250](https://github.com/user-attachments/assets/ccb1fc8a-1d15-43ee-a412-2f572ccdd2a0)
+![Screenshot 2024-08-02 071332](https://github.com/user-attachments/assets/d3842430-5ed4-4b08-bf60-4c8045a83784)
 -
 ![Screenshot 2024-07-27 072208](https://github.com/user-attachments/assets/d1e1e8eb-88be-42ce-b954-7d6ac35e45bf)
 
