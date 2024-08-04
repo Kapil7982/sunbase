@@ -92,6 +92,15 @@ public class CustomerController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCustomer(@PathVariable Integer id) {
+        Customer customer = customerService.getCustomerById(id);
+        if (customer != null && customer.getUuid() != null) {
+            try {
+                remoteApiService.deleteCustomerFromRemoteApi(customer.getUuid());
+            } catch (Exception e) {
+                logger.warn("Failed to delete customer from remote API: " + e.getMessage());
+                
+            }
+        }
         customerService.deleteCustomer(id);
         return ResponseEntity.noContent().build();
     }
@@ -108,5 +117,17 @@ public class CustomerController {
             Pageable pageable) {
         Page<Customer> customers = customerService.searchCustomers(keyword, pageable);
         return ResponseEntity.ok(customers);
+    }
+    
+    @DeleteMapping("/remote-customers/{uuid}")
+    public ResponseEntity<String> deleteCustomerFromRemoteApi(@PathVariable String uuid) {
+        try {
+            remoteApiService.deleteCustomerFromRemoteApi(uuid);
+            return ResponseEntity.ok("Customer deleted successfully from remote API");
+        } catch (Exception e) {
+            logger.error("Failed to delete customer from remote API", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Failed to delete customer from remote API: " + e.getMessage());
+        }
     }
 }

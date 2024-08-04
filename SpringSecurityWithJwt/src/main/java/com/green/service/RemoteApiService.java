@@ -5,8 +5,10 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import com.green.model.Customer;
 import com.green.model.CustomerDTO;
@@ -89,6 +91,7 @@ public class RemoteApiService {
     }
 
     private void updateCustomerFromDTO(Customer customer, CustomerDTO dto) {
+    	customer.setUuid(dto.getUuid());
         customer.setFirstName(dto.getFirstName());
         customer.setLastName(dto.getLastName());
         customer.setStreet(dto.getStreet());
@@ -96,5 +99,36 @@ public class RemoteApiService {
         customer.setCity(dto.getCity());
         customer.setState(dto.getState());
         customer.setPhone(dto.getPhone());
+    }
+    
+    public void deleteCustomerFromRemoteApi(String uuid) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + AUTH_TOKEN);
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        String deleteUrl = API_URL + "?cmd=delete&uuid=" + uuid;
+
+        try {
+            ResponseEntity<String> response = restTemplate.exchange(
+                deleteUrl,
+                HttpMethod.POST,
+                entity,
+                String.class
+            );
+
+            if (response.getStatusCode() == HttpStatus.OK) {
+                logger.info("Customer deleted successfully from remote API: " + uuid);
+            } else {
+                logger.error("Failed to delete customer from remote API: " + uuid + ". Status: " + response.getStatusCode() + ", Body: " + response.getBody());
+                throw new RuntimeException("Failed to delete customer from remote API. Status: " + response.getStatusCode() + ", Body: " + response.getBody());
+            }
+        } catch (HttpClientErrorException e) {
+            logger.error("HTTP Client Error deleting customer from remote API: " + uuid + ". Status: " + e.getStatusCode() + ", Response: " + e.getResponseBodyAsString(), e);
+            throw new RuntimeException("Error deleting customer from remote API: " + e.getMessage(), e);
+        } catch (Exception e) {
+            logger.error("Unexpected error deleting customer from remote API: " + uuid, e);
+            throw new RuntimeException("Unexpected error deleting customer from remote API: " + e.getMessage(), e);
+        }
     }
 }

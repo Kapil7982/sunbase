@@ -1,12 +1,19 @@
 package com.green.model;
 
 
+import java.util.UUID;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.PrePersist;
 import lombok.Data;
 
 @Data
 public class CustomerDTO {
-    private String uuid;
+	
+	@Column(unique = true)
+	private String uuid;
     
     @JsonProperty("first_name")
     private String firstName;
@@ -20,4 +27,9 @@ public class CustomerDTO {
     private String state;
     private String email;
     private String phone;
+    
+    @PrePersist
+    public void generateUUID() {
+        this.uuid = UUID.randomUUID().toString();
+    }
 }
